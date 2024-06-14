@@ -53,13 +53,13 @@ struct SubGraph {
 
     void print() const noexcept {
         using namespace std;
-        cout << "|V|: " << size() << endl;
-        cout << "|L|: ";
+        cout << "|V|: " << size() <<  " |L|: " << left.size() <<  " |R|: " << right.size()<< endl;
+        cout << "L: ";
         for (udi u : left) {
             cout << u << " ";
         }
         cout << endl;
-        cout << "|R|: ";
+        cout << "R: ";
         for (udi u : right) {
             cout << u << " ";
         }

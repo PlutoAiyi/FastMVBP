@@ -4,7 +4,7 @@ CXX = g++
 
 CXXFLAGS = -std=c++20 -O3
 
-TARGET = main
+TARGET = FastMVBP
 
 SRC = main.cpp
 
