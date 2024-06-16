@@ -88,9 +88,9 @@ int main(int argc, char* argv[]) {
     int edges=-1;
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
-        if (arg == "-k" && i + 1 < argc) {
+        if (arg == "-s" && i + 1 < argc) {
             k = std::stoi(argv[++i]);
-        } else if (arg == "-K" && i + 1 < argc) {
+        } else if (arg == "-k" && i + 1 < argc) {
             top_k = std::stoi(argv[++i]);
         } else if (arg == "-f" && i + 1 < argc) {
             graphPath = argv[++i];

@@ -5,6 +5,7 @@ This repository implements  our algorithm of listing top-k s-biplxes.
 ### Compile the code
 
 ```
+$ cd Code
 $ make clean
 $ make
 ```
@@ -14,7 +15,7 @@ $ make
 Suppose we want to list the top-2 1-biplexes with at least 3 vertices in both left side and right side from "youtube.g".
 
 ```
-$ ./FastMVBP  -f "../dataset/youtube.g" -k 1 -l 3 -r 3 -K 2
+$ ./FastMVBP  -f "../dataset/youtube.g" -s 1 -l 3 -r 3 -k 2
 ```
 
 Then we get the following result:
@@ -46,16 +47,16 @@ The most important command line options are:
 ```
 -f <Path to the input file graph>
 -g <three parameter needed as above>
--k <k-value>
+-s <s-value>
 -l <the lowerbound of the number of vertices in left side>
 -r <the lowerbound of the number of vertices in right side>
--K <top-K>
+-k <top-k, the number of s-biplex to be found>
 ```
 
 The common format of options are as follows.
 
 ```
-$ ./FastMVBP -f "<file_path>" -k <k-value> -l <left lowerbound> -r <right lowerbound> -K <K-number>
+$ ./FastMVBP -f "<file_path>" -s <s-value> -l <left lowerbound> -r <right lowerbound> -k <k-number>
 ```
 
 ### Input format
