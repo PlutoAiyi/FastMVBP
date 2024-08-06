@@ -235,7 +235,6 @@ struct BiKplex {
             deg_in_P[v]++;
             deg_in_PC[v]++;
         }
-        // 点 u 是极限点
         if (deg_in_P[u] + k == P_R.vnum) {
             auto pred = [&](udi v) { return !g.is_neighbor(u, v); };
             C_R_remove_if(g, pred);
@@ -980,6 +979,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
             ns.C_R_remove(g, v);
             ns.X_R_add(g, v);
             udi  ubl=ns.ub_L;udi ubr =ns.ub_R;
+            udi  lbl=ns.lb_L;udi lbr =ns.lb_R;
             if(ns.is_need_search() && ns.P_R.vnum + ns.C_R.vnum >= ns.lb_R&& ns.P_L.vnum + ns.C_L.vnum >= ns.lb_L){
             lvl++;
             new_BK(g,lvl,ns);
@@ -989,6 +989,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
                 ns.exchange();
             }
             ns.ub_L=ubl;ns.ub_R=ubr;
+            ns.lb_L=lbl;ns.lb_R=lbr;
             if (lb_global() + 1 > ns.ub_L + ns.lb_R) ns.lb_R = lb_global() + 1 - ns.ub_L;
             if (lb_global() + 1 > ns.ub_R + ns.lb_L) ns.lb_L = lb_global() + 1 - ns.ub_R;
             auto pred=[&](udi u){
@@ -1021,6 +1022,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
             }
         }
         udi  ubl=ns.ub_L;udi ubr =ns.ub_R;
+        udi  lbl=ns.lb_L;udi lbr =ns.lb_R;
         if(ns.is_need_search() && ns.P_R.vnum + ns.C_R.vnum >= ns.lb_R&& ns.P_L.vnum + ns.C_L.vnum >= ns.lb_L){
         lvl++;
         new_BK(g,lvl,ns);
@@ -1030,6 +1032,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
             ns.exchange();
         }
         ns.ub_L=ubl;ns.ub_R=ubr;
+        ns.lb_L=lbl;ns.lb_R=lbr;
         if (lb_global() + 1 > ns.ub_L + ns.lb_R) ns.lb_R = lb_global() + 1 - ns.ub_L;
         if (lb_global() + 1 > ns.ub_R + ns.lb_L) ns.lb_L = lb_global() + 1 - ns.ub_R;
         for(udi u:doing){
@@ -1161,6 +1164,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
         ns.C_L_remove(g, pivot);
         ns.X_L_add(g, pivot);
         udi  ubl=ns.ub_L;udi ubr =ns.ub_R;
+        udi  lbl=ns.lb_L;udi lbr =ns.lb_R;
         if(ns.is_need_search() && ns.P_R.vnum + ns.C_R.vnum >= ns.lb_R&& ns.P_L.vnum + ns.C_L.vnum >= ns.lb_L){
         lvl++;
         new_BK(g,lvl,ns);
@@ -1171,6 +1175,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
             ns.exchange();
         }
         ns.ub_L=ubl;ns.ub_R=ubr;
+        ns.lb_L=lbl;ns.lb_R=lbr;
         if (lb_global() + 1 > ns.ub_L + ns.lb_R) ns.lb_R = lb_global() + 1 - ns.ub_L;
         if (lb_global() + 1 > ns.ub_R + ns.lb_L) ns.lb_L = lb_global() + 1 - ns.ub_R;
         vector<udi> remove_CL,remove_CR,remove_XL,remove_XR;
@@ -1178,21 +1183,14 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
         remove_CR.reserve(R_size);
         remove_XL.reserve(L_size);
         remove_XR.reserve(R_size);
-    if(lvl<=ns.olvl_l){
-        ns.flag_l2=false;
-        ns.olvl_l=MAX;
-    }
         ns.X_L_remove(g, pivot);
         ns.P_L_add(g, pivot,remove_CR,remove_CL,remove_XR,remove_XL);
         ns.reduction(g,remove_CR,remove_CL,remove_XR,remove_XL);
         ubl=ns.ub_L;ubr =ns.ub_R;
+        lbl=ns.ub_L;lbr =ns.ub_R;
         if(ns.is_need_search() && ns.P_R.vnum + ns.C_R.vnum >= ns.lb_R && ns.P_L.vnum + ns.C_L.vnum >= ns.lb_L){
         lvl++;
-        if(lvl>0){
         new_BK(g,lvl,ns);
-        }else{
-        new_BK(g,lvl,ns);
-        }
         lvl--;
         }
         //ns.exchanged=O_E;
@@ -1200,6 +1198,7 @@ void new_BK(const Graph& g,udi lvl,BiKplex &ns) {
             ns.exchange();
         }
         ns.ub_L=ubl;ns.ub_R=ubr;
+        ns.lb_L=lbl;ns.lb_R=lbr;
         if (lb_global() + 1 > ns.ub_L + ns.lb_R) ns.lb_R = lb_global() + 1 - ns.ub_L;
         if (lb_global() + 1 > ns.ub_R + ns.lb_L) ns.lb_L = lb_global() + 1 - ns.ub_R;
         for(udi u:remove_CR){
@@ -1639,7 +1638,6 @@ void decomposition(const Graph& g,BiKplex& s,RandList & delete_v) {
                     }
                 };
                 ns.X_R_remove_if(g,predr);
-                //遍历CL
                 auto predl = [&] (udi u){
                     if(ns.deg_in_PC[u]<ns.lb_R - k){
                         return true;
@@ -1686,7 +1684,6 @@ void decomposition(const Graph& g,BiKplex& s,RandList & delete_v) {
             if(is_search && nei3.size()>10*(ns.C_L.vnum+ns.C_R.vnum)){
                 vector<udi> subset;
                 subset.reserve(k+1);
-                //计算
                 if(ns.lb_R==ns.C_R.vnum+ns.P_R.vnum){
                     for(udi u:ns.C_L.vlist){
                         if(ns.deg_in_PC[u]==ns.C_R.vnum+ns.P_R.vnum){

@@ -26,7 +26,7 @@ reading finish
 Left vertexs:94238,Right vertexs:30087,Edges:293360
 _lb_L:192,_ub_L3086,_lb_R:3,_ub_R64,graph_size:12958
 _lb_L:3,_ub_L48,_lb_R:272,_ub_R471,graph_size:0
-tot time = 2.67481 seconds
+tot time = 9.87683 seconds
 tot cnt = 2
 |V|: 319 |L|: 316 |R|: 3
 L: 70 192 46979 ...
